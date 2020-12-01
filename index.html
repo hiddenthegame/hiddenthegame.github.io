@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="a-fullscreen">
+  <head>
+  	<meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>HIDDEN</title>
+    <meta name="description" content="A-Frame Examples" />
+    <meta aframe-injected="" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui,viewport-fit=cover"/>
+    <meta aframe-injected="" name="mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" href="">
+    <script src="scripts/a-frame/1.0.4/aframe.min.js"></script>
+    <script src="scripts/a-frame-extras/6.1.1/aframe-extras.min.js"></script>
+    <script src="scripts/a-frame-event-set-component/3.0.3/aframe-event-set-component.min.js"></script>
+    <style>
+      .mainUI {
+        border: 0px solid pink;
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .regionUI {
+        border: 0px solid yellow;
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        pointer-events: none;
+      }
+      .buttonUI {
+        border: 0px solid lime;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        pointer-events: auto;
+        filter: drop-shadow(0px 0px 20px white);
+      }
+    </style>
+  </head>
+  <body>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Script de chargement des assets et d'interaction pour l'activation du son -->
+    <script>
+      AFRAME.registerComponent("start", {
+        init: function() {
+          // bloque les pointerevents avant le clic
+          let uiDiv = document.getElementById("uiDiv");
+          uiDiv.style["pointer-events"] = "auto";
+          // mep d'un bloqueur d'interaction en arrière plan
+          uiDiv.style["background-color"] = "rgba(0, 0, 0, 1)";
+          // changement curseur sur zone cliquable (pc)
+          let buttonEnter = document.getElementById("buttonEnter");
+          buttonEnter.style.cursor = "pointer";
+          // fade-in basique
+          let fadeIn = function() {
+            // réautoriser les pointerevents
+            uiDiv.style["pointer-events"] = "none";
+            // interaction necessaire à l'activation du son
+            let soundPlayer = document.querySelector("#ambientSound");
+            soundPlayer.components.sound.playSound();
+            // retirer startButton après clic
+            buttonEnter.parentNode.remove(buttonEnter);
+            // fade out de l'uiDiv (background)
+            uiDiv.style["background-color"] = "rgba(0, 0, 0, 0.0)";
+            uiDiv.style["transition"] = "background-color 3000ms linear";
+          };
+          // Activer pour pc/smartphone (sans VR)
+          buttonEnter.addEventListener("touchstart", fadeIn);
+          buttonEnter.addEventListener("mousedown", fadeIn);
+        }
+      });
+    </script>
+    <div class="mainUI" id="uiDiv" oncontextmenu="return false;" style="pointer-events: auto; background-color: rgba(0, 0, 0, 0.75);">
+      <div class="regionUI">
+        <div class="buttonUI">
+          <img id="buttonEnter" src="assets\enter.png" style="cursor: pointer;" />
+        </div>
+      </div>
+    </div>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Scene A-Frame -->
+    <a-scene start=""
+             fog="density: 0.2; color: #2f302c; far: 4.5; near: 0">
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Chargement des assets> -->
+        <a-assets>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Mesh de navigation> -->
+            <a-asset-item id="nav-mesh" src="assets/navmesh.glb"></a-asset-item>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <.glb statiques> -->
+            <a-asset-item id="balais"
+                          src="assets\piece_decomposee\balais.glb"
+                          ></a-asset-item>
+            <a-asset-item id="bouteilles"
+                          src="assets\piece_decomposee\bouteilles.glb"
+                          ></a-asset-item>
+            <a-asset-item id="caisses"
+                          src="assets\piece_decomposee\caisses.glb"
+                          ></a-asset-item>
+            <a-asset-item id="echelles"
+                          src="assets\piece_decomposee\echelles.glb"
+                          ></a-asset-item>
+            <a-asset-item id="etabli"
+                          src="assets\piece_decomposee\etabli.glb"
+                          ></a-asset-item>
+            <a-asset-item id="fauteuils"
+                          src="assets\piece_decomposee\fauteuils.glb"
+                          ></a-asset-item>
+            <a-asset-item id="mannequins"
+                          src="assets\piece_decomposee\mannequins.glb"
+                          ></a-asset-item>
+            <a-asset-item id="masque_entier"
+                          src="assets\piece_decomposee\masque_entier.glb"
+                          ></a-asset-item>
+            <a-asset-item id="meuble_tiroir"
+                          src="assets\piece_decomposee\meuble_tiroir.glb"
+                          ></a-asset-item>
+            <a-asset-item id="miroir"
+                          src="assets\piece_decomposee\miroir.glb"
+                          ></a-asset-item>
+            <a-asset-item id="murs"
+                          src="assets\piece_decomposee\murs.glb"
+                          ></a-asset-item>
+            <a-asset-item id="peluches"
+                          src="assets\piece_decomposee\peluches.glb"
+                          ></a-asset-item>
+            <a-asset-item id="plafond"
+                          src="assets\piece_decomposee\plafond.glb"
+                          ></a-asset-item>
+            <a-asset-item id="porte_entree"
+                          src="assets\piece_decomposee\porte_entree.glb"
+                          ></a-asset-item>
+            <a-asset-item id="portemanteau"
+                          src="assets\piece_decomposee\portemanteau.glb"
+                          ></a-asset-item>
+            <a-asset-item id="posters"
+                          src="assets\piece_decomposee\posters.glb"
+                          ></a-asset-item>
+            <a-asset-item id="poubelles"
+                          src="assets\piece_decomposee\poubelles.glb"
+                          ></a-asset-item>
+            <a-asset-item id="sol"
+                          src="assets\piece_decomposee\sol.glb"
+                          ></a-asset-item>
+            <a-asset-item id="spots"
+                          src="assets\piece_decomposee\spots.glb"
+                          ></a-asset-item>
+            <a-asset-item id="wetfloor"
+                          src="assets\piece_decomposee\wetfloor.glb"
+                          ></a-asset-item>
+            <a-asset-item id="lampe_torche"
+                          src="assets\lampe_torche.glb"
+                          ></a-asset-item>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <pièces du masque (statiques)> -->
+            <a-asset-item id="p_masque1"
+                          src="assets\pieces_masque\01.glb"
+                          ></a-asset-item>
+            <a-asset-item id="p_masque2"
+                          src="assets\pieces_masque\02.glb"
+                          ></a-asset-item>
+            <a-asset-item id="p_masque3"
+                          src="assets\pieces_masque\03.glb"
+                          ></a-asset-item>
+            <a-asset-item id="p_masque4"
+                          src="assets\pieces_masque\04.glb"
+                          ></a-asset-item>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <pièces du masque (dynamiques)> -->
+            <a-asset-item id="p_masque5"
+                          src="assets\animated\pieces_masque_animees\05.glb"
+                          ></a-asset-item>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <.glb dynamiques> -->
+            <a-asset-item id="casier"
+                          src="assets/animated/casier.glb"
+                          ></a-asset-item>
+            <a-asset-item id="etagere"
+                          src="assets/animated/etagere.glb"
+                          ></a-asset-item>
+            <a-asset-item id="fauteuil_coussin"
+                          src="assets/animated/fauteuil_coussin.glb"
+                          ></a-asset-item>
+            <a-asset-item id="portecachee"
+                          src="assets/animated/portecachee.glb"
+                          ></a-asset-item>
+            <a-asset-item id="rideaux"
+                          src="assets/animated/rideaux.glb"
+                          ></a-asset-item>
+            <a-asset-item id="tiroirs"
+                          src="assets/animated/tiroirs.glb"
+                          ></a-asset-item>
+        </a-assets>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Scène active> -->
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Camera/Joueur> -->
+        <a-entity id="rig"
+                  movement-controls="speed: 0.1; constrainToNavMesh: true">
+                  <a-entity look-controls="pointerLockEnabled: true"
+                            camera position="0 1.6 0">
+                            <a-cursor></a-cursor>
+                            <a-entity light="type: spot; angle: 20; intensity: 3.68; color: #fffde0; penumbra: 0.15"></a-entity>
+                            <a-light type="ambient"
+                                     intensity="0"
+                                     ></a-light>
+                            <a-entity gltf-model="#lampe_torche"
+                                      position="0.3 -0.2 -0.5"
+                                      scale="0.1 0.1 0.1"
+                                      rotation="-15 -180 0"
+                                      animation__position="property: position; easing: easeInOutQuad; dir: alternate; dur: 2000; to: 0.315 -0.205 -0.5; loop: true;"></a-entity>
+                            <a-entity id="camtext"
+                                      text="color: white; align: center; width: 1; font: ; fontImage: ; value:; font: assets\font\verdana.fnt; fontImage: assets\font\verdana.png"
+                                      position="0 -0.7 -1"
+                                      visible="false"
+                                      material="fog: false"></a-entity>
+                                     </a-entity>
+                                     </a-entity>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Son ambiant> -->
+        <a-sound id="ambientSound"
+                 src="assets\sons\ambiant.mp3"
+                 autoplay="true"
+                 loop:"true"
+                 volume="0.5"
+                 ></a-sound>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <Mesh de navigation> -->
+        <a-entity gltf-model="#nav-mesh" nav-mesh visible="false" position="0 0.1 0"></a-entity>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <.glb statiques> -->
+        <a-entity gltf-model="#balais"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#bouteilles"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#caisses"
+                  position="0 0 0"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Que contiennent ces caisses...?"
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false"
+        ></a-entity>
+        <a-entity gltf-model="#echelles"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#etabli"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#fauteuils"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#mannequins"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#masque_entier"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#meuble_tiroir"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#miroir"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#murs"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#peluches"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#plafond"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#porte_entree"
+                  position="0 0 0"
+                  sound="on: click; src: url(assets\sons\serrure_porte.mp3); autoplay: false; preload: auto"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Mince, un verrou..."
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false"
+        ></a-entity>
+        <a-entity gltf-model="#portemanteau"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#posters"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#poubelles"
+                  position="0 0 0"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Cette odeur..."
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false"
+        ></a-entity>
+        <a-entity gltf-model="#sol"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#spots"
+                  position="0 0 0"
+        ></a-entity>
+        <a-entity gltf-model="#wetfloor"
+                  position="0 0 0"
+        ></a-entity>
+<!-- ______________________________________________________________________________________________________________________________________________________________________________________________ -->
+<!-- <.glb dynamiques> -->
+        <a-entity id="etagere_animation"
+                  gltf-model="#etagere"
+                  position="-0.34 1.33 2.33"
+                  sound="on: click; src: url(assets\sons\boite_bois.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true"
+                  event-set__click="_event: click; _target: #etagere_animation; animation-mixer.clip: *"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Ici ?"
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false"
+                  ></a-entity>
+        <a-entity id="casier_animation"
+                  gltf-model="#casier"
+                  position="-5.18 0.98 -2.15"
+                  visible=""
+                  sound="on: click; src: url(assets\sons\porte_casier.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true"
+                  event-set__click="_event: click; _target: #casier_animation; animation-mixer.clip: *"
+                  ></a-entity>
+        <a-entity id="fauteuil_animation"
+                  gltf-model="#fauteuil_coussin"
+                  position="-1.88 0.53 0.18"
+                  visible=""
+                  rotation="0 12.43 0"
+                  sound="on: click; src: url(assets\sons\oreiller.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true"
+                  event-set__click="_event: click; _target: #fauteuil_animation; animation-mixer.clip: *"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Je pense que ce coussin dissimule quelque chose..."
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false">
+                          </a-entity>
+        <a-entity id="rideaux_animation"
+                  gltf-model="#rideaux"
+                  position="-2.31 0.75 1.16"
+                  visible=""
+                  rotation="0 90 0"
+                  sound="on: click; src: url(assets\sons\rideaux.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true; duration: 1;"
+                  event-set__click="_event: click; _target: #rideaux_animation; animation-mixer.clip: *"
+                  ></a-entity>
+        <a-entity id="tiroirs_animation"
+                  gltf-model="#tiroirs"
+                  position="0.45 0.54 -2.12"
+                  visible=""
+                  rotation="0 -90 0"
+                  sound="on: click; src: url(assets\sons\tiroir.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true; duration:1.5"
+                  event-set__click1="_event: click; _target: #tiroirs_animation; animation-mixer.clip: *"
+                  event-set__click2="_event: click; _target: #p_masque_5_animation; animation-mixer.clip: *"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Tiens... Il y a probablement quelque chose ici."
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false">
+                          </a-entity>
+        <a-entity id="portecachee_animation"
+                  gltf-model="#portecachee"
+                  position="-2.52 1.22 1.25"
+                  visible=""
+                  sound="on: click; src: url(assets\sons\porte_secrete.mp3); autoplay: false; preload: auto"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true;"
+                  event-set__click="_event: click; _target: #portecachee_animation; animation-mixer.clip: *"
+                  ></a-entity>
+        <a-entity gltf-model="#p_masque1"
+                  position="0 0.03912 0"
+                  scale="0.3 0.3 0.3"
+                  visible=""
+                  rotation="-74.34 -52.24 29.64"
+                  visible=""
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Un morceau de masque... Avec de la laine rousse ?"
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false">
+                          </a-entity>
+        <a-entity gltf-model="#p_masque2"
+                  position="-5.43 0.19 -2.02"
+                  scale="0.3 0.3 0.3"
+                  rotation="78.47 -68.51 149.68"
+                  visible="true"
+                  event-set__enter="_event: mouseenter; _target: #camtext; visible: true; text.value: Un de plus !"
+                  event-set__leave="_event: mouseleave; _target: #camtext; visible: false">
+                          </a-entity>
+        <a-entity gltf-model="#p_masque3"
+                  position="-0.35 1.39 2.29"
+                  scale="0.3 0.3 0.3"
+                  rotation="8.22 50.73 35.65"
+                  visible="true"
+                  ></a-entity>
+        <a-entity gltf-model="#p_masque4"
+                  position="-1.74 0.44 0.18"
+                  scale="0.3 0.3 0.3"
+                  rotation="62.3 -19.7 135.2"
+                  visible="true"
+                  ></a-entity>
+        <a-entity id="p_masque_5_animation"
+                  gltf-model="#p_masque5"
+                  position="0.47 0.10 -1.94"
+                  scale=""
+                  rotation="0 -90 0"
+                  visible="true"
+                  animation-mixer="clip: none; loop: once; clampWhenFinished: true; duration: 1.5"
+                  ></a-entity>
+    </a-scene>
+  </body>
+
+  <!-- <Sources/Citations/Crédits> -->
+  <!-- <Modélisation 3d : SALFATI, Emilie - DSAA Design et création numérique - École Estienne> -->
+  <!-- <Scénarisation : MOREAU Hugo, SANZ Abigail & VINET Anne - Master Patrimoines Audiovisuels - INA > -->
+  <!-- <Code et developpement : BOURDON, Pierre - DSAA Design et création numérique - École Estienne> -->
+  <!-- <Réalisé avec A-Frame v1.0.4, des scripts de Lee Stemkoski et Don McCurdy> -->
+
+</html>
